@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام الأمن والحراسة المدرسية</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #f3f6fa;
+      color: #17324d;
+    }
+
+    .header {
+      background: #123b5d;
+      color: white;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 26px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #d9e6f1;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 460px;
+      margin: 70px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.07);
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      text-align: center;
+    }
+
+    .description {
+      color: #657587;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      font-size: 17px;
+      outline: none;
+      direction: ltr;
+      text-align: center;
+    }
+
+    input:focus {
+      border-color: #1677b8;
+      box-shadow: 0 0 0 3px rgba(22,119,184,.12);
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      background: #1479b8;
+      color: white;
+      border: 0;
+      border-radius: 9px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover { background: #0d6094; }
+
+    .note {
+      margin-top: 22px;
+      text-align: center;
+      color: #78889a;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    @media (max-width: 480px) {
+      .container { margin: 35px auto; }
+      .card { padding: 24px 20px; }
+      .header h1 { font-size: 21px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1>نظام الأمن والحراسة المدرسية</h1>
+    <p>إدارة بيانات الحراس ومتابعة التغطية الأمنية للمدارس</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>بوابة المدارس</h2>
+
+      <p class="description">
+        أدخل الرقم الوزاري للمدرسة للانتقال إلى بياناتها.
+      </p>
+
+      <form id="schoolForm">
+        <label for="schoolNumber">الرقم الوزاري للمدرسة</label>
+
+        <input
+          id="schoolNumber"
+          type="text"
+          placeholder="أدخل الرقم الوزاري"
+          autocomplete="off"
+          required
+        >
+
+        <button type="submit">متابعة</button>
+      </form>
+
+      <p class="note">
+        هذه واجهة تجريبية، ولم يتم ربطها بقاعدة البيانات بعد.
+      </p>
+    
+<script>
+  document.getElementById('schoolForm')
+    .addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const schoolNumber = document
+        .getElementById('schoolNumber')
+        .value
+        .trim();
+
+      if (!schoolNumber) {
+        alert('يرجى إدخال الرقم الوزاري للمدرسة.');
+        return;
+      }
+
+      // انتقال تجريبي فقط، دون التحقق من قاعدة البيانات
+      window.location.href = 'school.html';
+    });
+</script>
+
+</body>
+</html>

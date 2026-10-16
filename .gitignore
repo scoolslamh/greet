@@ -1,0 +1,22 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Local dependencies and build files
+node_modules/
+dist/
+.cache/
+
+# Editor and operating system files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local backups
+*.bak
+*.backup
+

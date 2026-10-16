@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بيانات المدرسة | نظام الأمن والحراسة المدرسية</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #f3f6fa;
+      color: #17324d;
+      font-family: Tahoma, Arial, sans-serif;
+    }
+
+    header {
+      background: #123b5d;
+      color: white;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 0;
+      color: #d9e6f1;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 30px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 26px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    }
+
+    h2 { margin-top: 0; font-size: 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .field {
+      background: #f7f9fc;
+      border: 1px solid #e2e8f0;
+      border-radius: 9px;
+      padding: 15px;
+    }
+
+    .field strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .field span {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 9px 15px;
+      border-radius: 8px;
+      background: #e8f2fc;
+      color: #145d90;
+      font-weight: bold;
+    }
+
+    .notice {
+      color: #64748b;
+      line-height: 1.9;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      background: #1479b8;
+      color: white;
+      padding: 13px 22px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 20px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>نظام الأمن والحراسة المدرسية</h1>
+    <p>بوابة بيانات المدرسة</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>بيانات المدرسة</h2>
+
+      <div class="grid">
+        <div class="field">
+          <strong>اسم المدرسة</strong>
+          <span>—</span>
+        </div>
+
+        <div class="field">
+          <strong>الرقم الوزاري</strong>
+          <span>—</span>
+        </div>
+
+        <div class="field">
+          <strong>المحافظة</strong>
+          <span>—</span>
+        </div>
+
+        <div class="field">
+          <strong>المدينة / القرية</strong>
+          <span>—</span>
+        </div>
+
+        <div class="field">
+          <strong>جنس المدرسة</strong>
+          <span>—</span>
+        </div>
+
+        <div class="field">
+          <strong>المشرف المتابع</strong>
+          <span>—</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>حالة استكمال البيانات</h2>
+      <span class="status">لم تبدأ</span>
+      <p class="notice">
+        ستظهر حالة المدرسة الفعلية بعد ربط الواجهة بقاعدة البيانات.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>بيانات الحراس</h2>
+      <p class="notice">
+        سيتمكن مدير المدرسة من إضافة حراس الوزارة والشركة،
+        وتحديث بياناتهم وتحديد حالة مباشرتهم.
+      </p>
+
+      <div class="actions">
+        <button disabled>إضافة حارس</button>
+        <button disabled>اعتماد البيانات نهائيًا</button>
+      </div>
+    </section>
+
+    <p class="notice">
+      هذه شاشة تصميم تجريبية، ولا تعرض بيانات حقيقية.
+    </p>
+  </main>
+</body>
+</html>
