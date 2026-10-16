@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بيانات المدرسة | نظام الأمن والحراسة المدرسية</title>
+
   <style>
     * { box-sizing: border-box; }
 
@@ -46,7 +47,10 @@
       box-shadow: 0 5px 20px rgba(0,0,0,.05);
     }
 
-    h2 { margin-top: 0; font-size: 20px; }
+    h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
 
     .grid {
       display: grid;
@@ -71,6 +75,7 @@
     .field span {
       font-size: 16px;
       font-weight: bold;
+      overflow-wrap: anywhere;
     }
 
     .status {
@@ -108,6 +113,32 @@
       cursor: not-allowed;
     }
 
+    .message {
+      padding: 14px 18px;
+      border-radius: 9px;
+      background: #e8f2fc;
+      color: #145d90;
+      margin-bottom: 20px;
+      line-height: 1.8;
+    }
+
+    .message.error {
+      background: #fff0f0;
+      color: #a12626;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #1479b8;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 600px) {
       .grid { grid-template-columns: 1fr; }
       header h1 { font-size: 20px; }
@@ -123,66 +154,150 @@
   </header>
 
   <main>
+    <div id="message" class="message" role="status" aria-live="polite">
+      جارٍ التحقق من بيانات المدرسة...
+    </div>
+
     <section class="card">
       <h2>بيانات المدرسة</h2>
 
       <div class="grid">
         <div class="field">
           <strong>اسم المدرسة</strong>
-          <span>—</span>
+          <span id="schoolName">—</span>
         </div>
 
         <div class="field">
           <strong>الرقم الوزاري</strong>
-          <span>—</span>
+          <span id="schoolNumbers">—</span>
         </div>
 
         <div class="field">
           <strong>المحافظة</strong>
-          <span>—</span>
+          <span id="governorate">—</span>
         </div>
 
         <div class="field">
           <strong>المدينة / القرية</strong>
-          <span>—</span>
+          <span id="city">—</span>
         </div>
 
         <div class="field">
           <strong>جنس المدرسة</strong>
-          <span>—</span>
+          <span id="schoolGender">—</span>
         </div>
 
         <div class="field">
           <strong>المشرف المتابع</strong>
-          <span>—</span>
+          <span>غير متاح في العرض العام</span>
         </div>
       </div>
     </section>
 
     <section class="card">
       <h2>حالة استكمال البيانات</h2>
-      <span class="status">لم تبدأ</span>
+
+      <span class="status">غير متاحة حاليًا</span>
+
       <p class="notice">
-        ستظهر حالة المدرسة الفعلية بعد ربط الواجهة بقاعدة البيانات.
+        ستظهر حالة استكمال بيانات المدرسة بعد تفعيل
+        نظام الدخول والتحقق من الصلاحيات.
       </p>
     </section>
 
     <section class="card">
       <h2>بيانات الحراس</h2>
+
       <p class="notice">
-        سيتمكن مدير المدرسة من إضافة حراس الوزارة والشركة،
-        وتحديث بياناتهم وتحديد حالة مباشرتهم.
+        سيتمكن المستخدم المخوّل لاحقًا من إضافة حراس الوزارة
+        والشركة، وتحديث بياناتهم وتحديد حالة مباشرتهم،
+        بعد تفعيل نظام التحقق من الصلاحيات.
       </p>
 
       <div class="actions">
-        <button disabled>إضافة حارس</button>
-        <button disabled>اعتماد البيانات نهائيًا</button>
+        <button type="button" disabled>إضافة حارس</button>
+        <button type="button" disabled>اعتماد البيانات نهائيًا</button>
       </div>
     </section>
 
-    <p class="notice">
-      هذه شاشة تصميم تجريبية، ولا تعرض بيانات حقيقية.
-    </p>
+    <a href="index.html" class="back-link">
+      العودة إلى بوابة المدارس
+    </a>
   </main>
+
+  <script>
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec';
+
+    const messageElement = document.getElementById('message');
+
+    function showMessage(text, isError = false) {
+      messageElement.textContent = text;
+      messageElement.classList.toggle('error', isError);
+    }
+
+    function setField(id, value) {
+      document.getElementById(id).textContent =
+        value == null || value === '' ? '—' : String(value);
+    }
+
+    async function loadSchool() {
+      const params = new URLSearchParams(window.location.search);
+      const schoolNumber = (params.get('schoolNumber') || '').trim();
+
+      if (!/^[0-9]+$/.test(schoolNumber)) {
+        showMessage(
+          'يرجى العودة إلى بوابة المدارس وإدخال رقم وزاري صحيح.',
+          true
+        );
+        return;
+      }
+
+      showMessage('جارٍ البحث عن بيانات المدرسة...');
+
+      try {
+        const url = new URL(API_URL);
+
+        url.searchParams.set('action', 'schoolLookup');
+        url.searchParams.set('schoolNumber', schoolNumber);
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+          throw new Error('تعذر الاتصال بالخدمة.');
+        }
+
+        const data = await response.json();
+
+        if (!data.success || !data.school) {
+          showMessage(
+            data.message || 'لم يتم العثور على مدرسة بهذا الرقم الوزاري.',
+            true
+          );
+          return;
+        }
+
+        const school = data.school;
+
+        setField('schoolName', school.schoolName);
+        setField('schoolNumbers', school.schoolNumbers);
+        setField('governorate', school.governorate);
+        setField('city', school.city);
+        setField('schoolGender', school.schoolGender);
+
+        showMessage('تم العثور على المدرسة واسترجاع بياناتها بنجاح.');
+
+      } catch (error) {
+        console.error('School lookup error:', error);
+
+        showMessage(
+          'تعذر استرجاع بيانات المدرسة حاليًا. يرجى المحاولة لاحقًا.',
+          true
+        );
+      }
+    }
+
+    loadSchool();
+  </script>
 </body>
 </html>

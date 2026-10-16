@@ -94,7 +94,34 @@
       cursor: pointer;
     }
 
-    button:hover { background: #0d6094; }
+    button:hover:not(:disabled) {
+      background: #0d6094;
+    }
+
+    button:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .message {
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 9px;
+      text-align: center;
+      line-height: 1.8;
+      font-size: 14px;
+      background: #e8f2fc;
+      color: #145d90;
+    }
+
+    .message.error {
+      background: #fff0f0;
+      color: #a12626;
+    }
+
+    .message[hidden] {
+      display: none;
+    }
 
     .note {
       margin-top: 22px;
@@ -132,37 +159,109 @@
         <input
           id="schoolNumber"
           type="text"
+          inputmode="numeric"
+          pattern="[0-9]+"
           placeholder="أدخل الرقم الوزاري"
           autocomplete="off"
           required
         >
 
-        <button type="submit">متابعة</button>
+        <button id="submitButton" type="submit">
+          متابعة
+        </button>
       </form>
 
+      <div
+        id="message"
+        class="message"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+
       <p class="note">
-        هذه واجهة تجريبية، ولم يتم ربطها بقاعدة البيانات بعد.
+        تُعرض بيانات المدرسة الأساسية بعد التحقق من الرقم الوزاري.
+        خدمات إدارة الحراس تتطلب صلاحية دخول معتمدة.
       </p>
-    
-<script>
-  document.getElementById('schoolForm')
-    .addEventListener('submit', function (event) {
+    </section>
+  </main>
+
+  <script>
+    const API_URL =
+      'https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec';
+
+    const form = document.getElementById('schoolForm');
+    const input = document.getElementById('schoolNumber');
+    const button = document.getElementById('submitButton');
+    const message = document.getElementById('message');
+
+    function showMessage(text, isError = false) {
+      message.textContent = text;
+      message.classList.toggle('error', isError);
+      message.hidden = false;
+    }
+
+    form.addEventListener('submit', async function (event) {
       event.preventDefault();
 
-      const schoolNumber = document
-        .getElementById('schoolNumber')
-        .value
-        .trim();
+      if (button.disabled) return;
 
-      if (!schoolNumber) {
-        alert('يرجى إدخال الرقم الوزاري للمدرسة.');
+      const schoolNumber = input.value.trim();
+
+      if (!/^[0-9]+$/.test(schoolNumber)) {
+        showMessage('يرجى إدخال رقم وزاري صحيح.', true);
         return;
       }
 
-      // انتقال تجريبي فقط، دون التحقق من قاعدة البيانات
-      window.location.href = 'school.html';
-    });
-</script>
+      button.disabled = true;
+      input.readOnly = true;
+      button.textContent = 'جارٍ التحقق...';
+      showMessage('جارٍ التحقق من بيانات المدرسة، يرجى الانتظار...');
 
+      try {
+        const url = new URL(API_URL);
+        url.searchParams.set('action', 'schoolLookup');
+        url.searchParams.set('schoolNumber', schoolNumber);
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+
+        const data = await response.json();
+
+        if (!data.success || !data.school) {
+          showMessage(
+            data.message || 'الرقم الوزاري غير مسجل في قاعدة البيانات.',
+            true
+          );
+          return;
+        }
+
+        const destination = new URL(
+          'school.html',
+          window.location.href
+        );
+
+        destination.searchParams.set('schoolNumber', schoolNumber);
+
+        window.location.href = destination.toString();
+
+      } catch (error) {
+        console.error('School lookup error:', error);
+
+        showMessage(
+          'تعذر الاتصال بقاعدة بيانات المدارس. يرجى المحاولة لاحقًا.',
+          true
+        );
+
+      } finally {
+        button.disabled = false;
+        input.readOnly = false;
+        button.textContent = 'متابعة';
+      }
+    });
+  </script>
 </body>
 </html>
