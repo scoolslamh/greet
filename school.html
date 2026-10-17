@@ -1,303 +1,288 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بيانات المدرسة | نظام الأمن والحراسة المدرسية</title>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: #f3f6fa;
-      color: #17324d;
-      font-family: Tahoma, Arial, sans-serif;
-    }
-
-    header {
-      background: #123b5d;
-      color: white;
-      padding: 24px 20px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 24px;
-    }
-
-    header p {
-      margin: 0;
-      color: #d9e6f1;
-    }
-
-    main {
-      max-width: 1050px;
-      margin: 30px auto;
-      padding: 0 18px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 26px;
-      margin-bottom: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,.05);
-    }
-
-    h2 {
-      margin-top: 0;
-      font-size: 20px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .field {
-      background: #f7f9fc;
-      border: 1px solid #e2e8f0;
-      border-radius: 9px;
-      padding: 15px;
-    }
-
-    .field strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .field span {
-      font-size: 16px;
-      font-weight: bold;
-      overflow-wrap: anywhere;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 9px 15px;
-      border-radius: 8px;
-      background: #e8f2fc;
-      color: #145d90;
-      font-weight: bold;
-    }
-
-    .notice {
-      color: #64748b;
-      line-height: 1.9;
-    }
-
-    .actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: 0;
-      border-radius: 9px;
-      background: #1479b8;
-      color: white;
-      padding: 13px 22px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .message {
-      padding: 14px 18px;
-      border-radius: 9px;
-      background: #e8f2fc;
-      color: #145d90;
-      margin-bottom: 20px;
-      line-height: 1.8;
-    }
-
-    .message.error {
-      background: #fff0f0;
-      color: #a12626;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 8px;
-      color: #1479b8;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .back-link:hover {
-      text-decoration: underline;
-    }
-
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
-      header h1 { font-size: 20px; }
-      .card { padding: 20px; }
-    }
-  </style>
+  <link rel="stylesheet" href="ui.css">
+<script src="ui.js" defer></script>
 </head>
-
-<body>
-  <header>
-    <h1>نظام الأمن والحراسة المدرسية</h1>
-    <p>بوابة بيانات المدرسة</p>
-  </header>
-
-  <main>
-    <div id="message" class="message" role="status" aria-live="polite">
-      جارٍ التحقق من بيانات المدرسة...
-    </div>
-
-    <section class="card">
-      <h2>بيانات المدرسة</h2>
-
+<body class="school-page">
+  <a class="skip-link" href="#mainContent">انتقل إلى المحتوى</a><header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/moe-logo.png" alt="وزارة التعليم" width="250" height="250"></span><span class="brand-copy"><strong>نظام الأمن والحراسة المدرسية</strong><span>الإدارة العامة للتعليم بمنطقة عسير</span></span></a><nav class="header-tools" aria-label="التنقل الرئيسي"><span class="workspace-chip">بوابة المدارس</span><a class="nav-link" href="admin.html">لوحة الإدارة</a></nav></div></header>
+  <main id="mainContent"><div class="page-intro"><span class="eyebrow">بوابة المدارس</span><h1>استكمال بيانات المدرسة</h1><p class="notice">راجع البيانات الأساسية، ثم استكمل بيانات الحراس وحصر التغطية الأمنية.</p></div><ol class="journey" aria-label="مراحل استكمال البيانات"><li class="flow-step" data-phase="school"><span class="step-number">1</span><span>بيانات المدرسة</span></li><li class="flow-step" data-phase="countStep"><span class="step-number">2</span><span>أعداد الحراس</span></li><li class="flow-step" data-phase="guardStep"><span class="step-number">3</span><span>بيانات الحراس</span></li><li class="flow-step" data-phase="censusStep"><span class="step-number">4</span><span>حصر التغطية</span></li><li class="flow-step" data-phase="reviewStep"><span class="step-number">5</span><span>المراجعة والاعتماد</span></li></ol>
+    <div id="message" class="message" role="status" aria-live="polite">جارٍ التحقق من بيانات المدرسة...</div>
+    <div class="school-layout"><aside class="school-context"><details class="card school-info" id="schoolDetails" open><summary id="schoolSummary">بيانات المدرسة الأساسية</summary>
       <div class="grid">
-        <div class="field">
-          <strong>اسم المدرسة</strong>
-          <span id="schoolName">—</span>
-        </div>
-
-        <div class="field">
-          <strong>الرقم الوزاري</strong>
-          <span id="schoolNumbers">—</span>
-        </div>
-
-        <div class="field">
-          <strong>المحافظة</strong>
-          <span id="governorate">—</span>
-        </div>
-
-        <div class="field">
-          <strong>المدينة / القرية</strong>
-          <span id="city">—</span>
-        </div>
-
-        <div class="field">
-          <strong>جنس المدرسة</strong>
-          <span id="schoolGender">—</span>
-        </div>
-
-        <div class="field">
-          <strong>المشرف المتابع</strong>
-          <span>غير متاح في العرض العام</span>
-        </div>
+        <div class="field"><strong>اسم المدرسة</strong><span id="schoolName">—</span></div>
+        <div class="field"><strong>الرقم الوزاري</strong><span id="schoolNumbers">—</span></div>
+        <div class="field"><strong>منطقة التعليم</strong><span id="educationRegion">عسير</span></div>
+        <div class="field"><strong>المحافظة</strong><span id="governorate">—</span></div>
+        <div class="field"><strong>المدينة / القرية</strong><span id="city">—</span></div>
+        <div class="field"><strong>جنس المدرسة</strong><span id="schoolGender">—</span></div>
+        <div class="field"><strong>المشرف المتابع</strong><span>غير متاح في العرض العام</span></div>
       </div>
-    </section>
-
-    <section class="card">
-      <h2>حالة استكمال البيانات</h2>
-
+    </details>
+    <section class="card school-status">
+      <h2>حالة البيانات</h2>
       <span class="status">غير متاحة حاليًا</span>
-
-      <p class="notice">
-        ستظهر حالة استكمال بيانات المدرسة بعد تفعيل
-        نظام الدخول والتحقق من الصلاحيات.
-      </p>
+      <p class="notice">ستظهر حالة استكمال بيانات المدرسة بعد تفعيل نظام الدخول والتحقق من الصلاحيات.</p>
     </section>
-
-    <section class="card">
+    </aside><div class="school-workspace"><section class="card" id="guardsSection" hidden>
       <h2>بيانات الحراس</h2>
-
-      <p class="notice">
-        سيتمكن المستخدم المخوّل لاحقًا من إضافة حراس الوزارة
-        والشركة، وتحديث بياناتهم وتحديد حالة مباشرتهم،
-        بعد تفعيل نظام التحقق من الصلاحيات.
-      </p>
-
-      <div class="actions">
-        <button type="button" disabled>إضافة حارس</button>
-        <button type="button" disabled>اعتماد البيانات نهائيًا</button>
+      <p class="notice">نسخة تجريبية للبحث في سجلات افتراضية وإعداد بيانات الحراس ومراجعتها داخل هذه الصفحة فقط. لا يتم حفظ البيانات أو إرسالها إلى قاعدة البيانات.</p>
+      <div id="countStep">
+        <h3>أولًا: تحديد أعداد الحراس</h3>
+        <form id="countForm">
+          <p class="notice">حدد عدد الحراس الفعلي لكل جهة. ستفتح لك استمارة مستقلة لكل حارس بالتتابع، بدءًا بحراس الوزارة. أدخل صفرًا إذا لم يوجد حراس للجهة.</p>
+          <div class="grid">
+            <div class="count-card entry"><h4>حراس الوزارة</h4><p>الحراس الرسميون التابعون للوزارة</p><label for="ministryCount">عدد حراس الوزارة</label><div class="count-control"><button type="button" class="secondary" data-count="ministryCount" data-delta="-1" aria-label="تقليل عدد حراس الوزارة">−</button><input id="ministryCount" type="number" min="0" max="100" step="1" value="0" required><button type="button" class="secondary" data-count="ministryCount" data-delta="1" aria-label="زيادة عدد حراس الوزارة">+</button></div></div>
+            <div class="count-card entry"><h4>حراس الشركة</h4><p>الحراس التابعون للشركة المشغّلة</p><label for="companyCount">عدد حراس الشركة</label><div class="count-control"><button type="button" class="secondary" data-count="companyCount" data-delta="-1" aria-label="تقليل عدد حراس الشركة">−</button><input id="companyCount" type="number" min="0" max="100" step="1" value="0" required><button type="button" class="secondary" data-count="companyCount" data-delta="1" aria-label="زيادة عدد حراس الشركة">+</button></div></div>
+          </div>
+          <div class="count-summary"><p id="totalCount" aria-live="polite">إجمالي الحراس: 0</p><span id="countNextHint">عند عدم وجود حراس ستنتقل مباشرة إلى نموذج الحصر.</span></div>
+          <div class="actions"><button id="countNextBtn" type="submit">التالي: نموذج الحصر</button></div>
+        </form>
+      </div>
+      <div id="guardStep" hidden>
+        <p id="guardProgress" class="step-label"></p>
+        <form id="guardForm" novalidate>
+          <div class="identity-lookup"><div class="entry"><label for="nationalId">السجل المدني / رقم الإقامة</label><input id="nationalId" inputmode="numeric" maxlength="10" pattern="[12][0-9]{9}" autocomplete="off" placeholder="أدخل 10 أرقام" required></div><button type="button" id="lookupBtn">جلب البيانات</button></div>
+          <fieldset id="guardDetails" hidden disabled><div class="grid">
+            <div class="entry"><label for="guardName">اسم الحارس</label><input id="guardName" maxlength="150" autocomplete="off" required></div>
+            <div class="entry"><label for="phone">رقم الجوال</label><input id="phone" type="tel" inputmode="numeric" maxlength="12" autocomplete="off" required></div>
+            <div class="entry"><label for="gender">الجنس</label><select id="gender" required><option value="">اختر الجنس</option><option value="ذكر">ذكر</option><option value="أنثى">أنثى</option></select></div>
+            <div class="entry" id="jobTitleWrap"><label for="jobTitle">المسمى الوظيفي</label><input id="jobTitle" maxlength="100"></div>
+            <div class="entry" id="rankWrap"><label for="rank">المرتبة</label><input id="rank" maxlength="50"></div>
+            <div class="entry"><label for="active">هل الحارس مباشر للعمل؟</label><select id="active" required><option value="">اختر حالة المباشرة</option><option value="نعم">نعم</option><option value="لا">لا</option></select></div>
+          </div>
+          </fieldset>
+          <p id="lookupStatus" class="message" role="status" aria-live="polite">أدخل السجل المدني ثم اضغط جلب البيانات.</p>
+          <p id="changeStatus" class="hint" aria-live="polite"></p>
+          <p class="hint">للتجربة: حارس وزارة برقم 1000000001، وحارس شركة برقم 2000000002. جميع البيانات افتراضية.</p>
+          <p class="hint">لا تستخدم بيانات شخصية حقيقية أثناء تجربة الواجهة؛ البيانات لا تُحفظ، لكنها تظل ظاهرة داخل الصفحة حتى مغادرتها.</p>
+          <div class="actions"><button type="button" class="secondary" id="previousBtn">السابق</button><button type="submit" id="nextBtn" disabled>حفظ ومتابعة</button></div>
+        </form>
+      </div>
+      <div id="reviewStep" hidden>
+        <h3>مراجعة بيانات الحراس</h3>
+        <p id="reviewSummary" class="notice"></p>
+        <div id="reviewList"></div>
+        <div class="actions"><button type="button" class="secondary" id="reviewBackBtn">السابق: تعديل آخر حارس</button><button type="button" class="secondary" id="resetBtn">البدء من جديد</button><button type="button" id="saveDraftBtn" disabled>حفظ المسودة</button><button type="button" id="approveBtn" disabled>اعتماد نهائي</button></div>
       </div>
     </section>
-
-    <a href="index.html" class="back-link">
-      العودة إلى بوابة المدارس
-    </a>
-  </main>
-
+    <a href="index.html" class="back-link">العودة إلى بوابة المدارس</a>
+    <section class="card" id="authorization"><h2>تفويض إدارة المدرسة</h2><p class="notice">الرقم الوزاري للبحث فقط. أدخل رمز التفويض الذي يسلّمه لك مسؤول النظام لفتح البيانات والحفظ. النماذج التجريبية تستخدم بيانات افتراضية فقط.</p><form id="authorizationForm"><div class="entry"><label for="accessCode">رمز التفويض الخاص بالمدرسة</label><input id="accessCode" type="password" autocomplete="off" minlength="32" maxlength="128" required></div><div class="actions"><button>فتح جلسة المدرسة</button><button id="logoutBtn" type="button" class="secondary">إنهاء الجلسة</button></div></form></section>
+    </div></div>
+  </main><footer class="site-footer"><span>نظام الأمن والحراسة المدرسية</span><span>الإدارة العامة للتعليم بمنطقة عسير</span></footer>
+  <script src="census.js"></script>
   <script>
-    const API_URL =
-      'https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec';
-
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec';
     const messageElement = document.getElementById('message');
-
-    function showMessage(text, isError = false) {
-      messageElement.textContent = text;
-      messageElement.classList.toggle('error', isError);
+    const $ = id => document.getElementById(id);
+    let publicSchool = null;
+    let steps = [];
+    let currentIndex = 0;
+    function showMessage(text, isError = false) { messageElement.textContent = text; messageElement.classList.toggle('error', isError); }
+    function setField(id, value) { $(id).textContent = value == null || value === '' ? '—' : String(value); }
+    function showStep(id) { ['countStep','guardStep','censusStep','reviewStep'].forEach(name => $(name).hidden = name !== id); }
+    function getCounts() { return [Number($('ministryCount').value), Number($('companyCount').value)]; }
+    function validCounts() { const counts = getCounts(); return ['ministryCount','companyCount'].every(id=>String($(id).value).trim()!=='') && counts.every(n => Number.isInteger(n) && n >= 0 && n <= 100); }
+    function updateTotal() { const [a,b] = getCounts(),valid=validCounts(); $('totalCount').textContent = valid ? `إجمالي الحراس: ${a+b}` : 'يرجى إدخال أعداد صحيحة بين 0 و100.'; $('countNextBtn').disabled=!valid; $('countNextBtn').textContent=valid&&a+b===0?'التالي: نموذج الحصر':'التالي: إدخال بيانات الحراس'; $('countNextHint').textContent=valid&&a+b>0?`ستستكمل بيانات ${a+b} من الحراس، كل حارس في خطوة مستقلة.`:'عند عدم وجود حراس ستنتقل مباشرة إلى نموذج الحصر.'; }
+    $('ministryCount').addEventListener('input', updateTotal);
+    $('companyCount').addEventListener('input', updateTotal);
+    document.querySelectorAll('[data-count]').forEach(button=>button.addEventListener('click',()=>{const input=$(button.dataset.count);input.value=String(Math.min(100,Math.max(0,(Number(input.value)||0)+Number(button.dataset.delta))));updateTotal();}));
+    $('countForm').addEventListener('submit', event => {
+      event.preventDefault();
+      if (!validCounts()) { showMessage('يرجى إدخال أعداد صحيحة للحراس.', true); return; }
+      const [ministry,company] = getCounts();
+      const previousSteps = steps;
+      steps = ['ministry','company'].flatMap(employer => Array.from(
+        {length: employer === 'ministry' ? ministry : company},
+        (_, index) => previousSteps.filter(s => s.employer === employer)[index] || {employer, data:{}}
+      ));
+      currentIndex = 0;
+      if (steps.length === 0) { renderCensus(); return; }
+      renderGuard();
+    });
+    // بيانات افتراضية محلية فقط؛ لا يجري استدعاء خدمة البحث عن الحراس.
+    const demoGuards = {
+      ministry: {'1000000001': {guardName:'حارس تجريبي - وزارة',phone:'0500000000',gender:'ذكر',jobTitle:'حارس أمن',rank:'الخامسة'}},
+      company: {'2000000002': {guardName:'حارس تجريبي - شركة',phone:'0500000000',gender:'ذكر'}}
+    };
+    const editableFields = ['guardName','phone','gender','jobTitle','rank'];
+    const fieldLabels = {guardName:'الاسم',phone:'الجوال',gender:'الجنس',jobTitle:'المسمى الوظيفي',rank:'المرتبة'};
+    function compareChanges(step, data) {
+      if (!step.reference) return [];
+      return editableFields.filter(id => (step.employer === 'ministry' || !['gender','jobTitle','rank'].includes(id)) &&
+        String(data[id] || '').trim() !== String(step.reference[id] || '').trim());
     }
-
-    function setField(id, value) {
-      document.getElementById(id).textContent =
-        value == null || value === '' ? '—' : String(value);
+    function updateChangeStatus() {
+      const step = steps[currentIndex];
+      const changes = compareChanges(step, readGuard());
+      $('changeStatus').textContent = !step.reference ? 'المصدر: إدخال يدوي.' :
+        changes.length ? 'تم تعديل بيانات الحارس عن البيانات المرجعية: ' + changes.map(id => fieldLabels[id]).join('، ') : 'البيانات مطابقة للسجل المرجعي.';
     }
-
+    function setGuardDetails(ready) { $('guardDetails').hidden=!ready; $('guardDetails').disabled=!ready; $('nextBtn').disabled=!ready; $('changeStatus').hidden=!ready; }
+    function guardLookupReady() { const step=steps[currentIndex];return !!step && step.lookupId===$('nationalId').value.trim(); }
+    function lookupDemoGuard() {
+      const step = steps[currentIndex];
+      const id = $('nationalId').value.trim();
+      if (!/^[12]\d{9}$/.test(id)) { $('lookupStatus').textContent = 'أدخل رقم هوية تجريبيًا مكونًا من 10 أرقام.'; return; }
+      step.reference = null;
+      const found = demoGuards[step.employer][id];
+      if (found) {
+        step.reference = {...found};
+        for (const field of editableFields) $(field).value = found[field] || '';
+        $('lookupStatus').textContent = 'تم العثور على الحارس في السجل التجريبي وتعبئة بياناته. يمكنك تعديلها.';
+      } else {
+        for (const field of editableFields) $(field).value = '';
+        $('lookupStatus').textContent = 'الحارس غير موجود في السجل التجريبي. يمكنك إدخال بياناته يدويًا.';
+      }
+      step.lookupId=id; $('active').value=found?'نعم':''; setGuardDetails(true); updateChangeStatus();
+    }
+    $('lookupBtn').addEventListener('click', lookupDemoGuard);
+    $('nationalId').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();$('lookupBtn').click();}});
+    $('nationalId').addEventListener('input', () => {
+      if(!steps[currentIndex])return;
+      steps[currentIndex].reference = null; steps[currentIndex].lookupId=null; setGuardDetails(false);
+      for (const field of editableFields) $(field).value = '';
+      $('active').value=''; steps[currentIndex].data=readGuard();
+      $('lookupStatus').textContent = 'اضغط جلب البيانات للسجل المدني المدخل.';
+      updateChangeStatus();
+    });
+    for (const field of editableFields) $(field).addEventListener('input', updateChangeStatus);
+    const fields = ['nationalId','guardName','phone','gender','jobTitle','rank','active'];
+    function renderGuard() {
+      const step = steps[currentIndex];
+      const ministry = step.employer === 'ministry';
+      const typeCount = steps.slice(0,currentIndex+1).filter(s => s.employer === step.employer).length;
+      const totalType = steps.filter(s => s.employer === step.employer).length;
+      $('guardProgress').textContent = `${ministry ? 'حارس وزارة' : 'حارس شركة'} (${typeCount} من ${totalType}) — الحارس ${currentIndex+1} من ${steps.length}`;
+      $('jobTitleWrap').hidden = !ministry;
+      $('rankWrap').hidden = !ministry;
+      $('jobTitle').required = ministry;
+      $('rank').required = ministry;
+      for (const id of fields) $(id).value = step.data[id] ?? (id === 'active' ? 'نعم' : '');
+      $('previousBtn').textContent = currentIndex === 0 ? 'العودة لتحديد الأعداد' : 'السابق';
+      $('nextBtn').textContent = currentIndex === steps.length - 1 ? 'حفظ والانتقال إلى نموذج الحصر' : 'حفظ ومتابعة الحارس التالي';
+      $('lookupStatus').textContent = step.reference ? 'تم استرجاع بيانات الحارس من السجل التجريبي.' : 'أدخل رقم هوية تجريبيًا ثم اضغط بحث.';
+      if(step.data.nationalId && step.data.guardName && !step.lookupId)step.lookupId=step.data.nationalId;
+      setGuardDetails(guardLookupReady()); if(guardLookupReady())$('lookupStatus').textContent='بيانات الحارس محملة. راجعها وأكمل المطلوب ثم احفظ.'; updateChangeStatus();
+      showStep('guardStep');
+    }
+    function readGuard() {
+      const data = {};
+      for (const id of fields) data[id] = $(id).value.trim();
+      if (steps[currentIndex].employer === 'company') { data.jobTitle = ''; data.rank = ''; }
+      return data;
+    }
+    function validateGuard(data) {
+      if (!/^[12]\d{9}$/.test(data.nationalId)) return 'رقم الهوية أو الإقامة يجب أن يتكون من 10 أرقام ويبدأ بـ 1 أو 2.';
+      if (!data.guardName) return 'اسم الحارس مطلوب.';
+      if (!/^(?:05\d{8}|9665\d{8})$/.test(data.phone)) return 'رقم الجوال غير صالح.';
+      if (!['ذكر','أنثى'].includes(data.gender)) return 'يرجى تحديد جنس الحارس.';
+      if (steps[currentIndex].employer === 'ministry' && (!data.jobTitle || !data.rank)) return 'المسمى الوظيفي والمرتبة مطلوبان لحارس الوزارة.';
+      if (!['نعم','لا'].includes(data.active)) return 'يرجى تحديد حالة المباشرة.';
+      if (steps.some((s,i) => i !== currentIndex && s.data.nationalId === data.nationalId)) return 'رقم الهوية مكرر بين الحراس المدخلين.';
+      return '';
+    }
+    $('guardForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      if(!guardLookupReady()){showMessage('اضغط جلب البيانات أولًا، ثم استكمل بيانات الحارس.',true);return;}
+      if(typeof workflowBusy!=='undefined' && workflowBusy)return;
+      const data = readGuard();
+      const error = validateGuard(data);
+      if (error) { showMessage(error, true); return; }
+      steps[currentIndex].data = data;
+      steps[currentIndex].changes = compareChanges(steps[currentIndex], data);
+      try { if(typeof saveGuardProgress==='function')await saveGuardProgress(); else showMessage('تم تجهيز بيانات الحارس مؤقتًا داخل الصفحة.'); }catch(error){showMessage(error.message,true);return;}
+      if (currentIndex + 1 < steps.length) { currentIndex++; renderGuard(); }
+      else renderCensus();
+    });
+    $('previousBtn').addEventListener('click', () => {
+      steps[currentIndex].data = readGuard();
+      if (currentIndex === 0) showStep('countStep');
+      else { currentIndex--; renderGuard(); }
+    });
+    function appendReviewText(parent, label, value) {
+      const p = document.createElement('p');
+      const strong = document.createElement('strong'); strong.textContent = label + ': ';
+      p.append(strong, document.createTextNode(value || '—'));
+      parent.appendChild(p);
+    }
+    function missingGuardFields(step) {
+      const d = step.data || {};
+      const missing = [];
+      if (!/^[12]\d{9}$/.test(d.nationalId || '')) missing.push('رقم الهوية أو الإقامة');
+      if (!String(d.guardName || '').trim()) missing.push('اسم الحارس');
+      if (!/^(?:05\d{8}|9665\d{8})$/.test(d.phone || '')) missing.push('رقم الجوال');
+      if (!['ذكر','أنثى'].includes(d.gender)) missing.push('الجنس');
+      if (step.employer === 'ministry') {
+        if (!String(d.jobTitle || '').trim()) missing.push('المسمى الوظيفي');
+        if (!String(d.rank || '').trim()) missing.push('المرتبة');
+      }
+      if (!['نعم','لا'].includes(d.active)) missing.push('حالة المباشرة');
+      if (d.nationalId && steps.filter(s => s.data.nationalId === d.nationalId).length > 1)
+        missing.push('رقم الهوية مكرر');
+      return missing;
+    }
+    function renderReview() {
+      const list = $('reviewList'); list.replaceChildren();
+      const ministry = steps.filter(s => s.employer === 'ministry').length;
+      const company = steps.length - ministry;
+      $('reviewSummary').textContent = `حراس الوزارة: ${ministry} | حراس الشركة: ${company} | الإجمالي: ${steps.length}`;
+      const completed = steps.filter(step => missingGuardFields(step).length === 0).length;
+      $('reviewSummary').textContent += ` | المكتمل: ${completed} | يحتاج استكمال: ${steps.length - completed}`;
+      steps.forEach((step,index) => {
+        const item = document.createElement('div'); item.className = 'review-item';
+        const heading = document.createElement('h3'); heading.textContent = `${step.employer === 'ministry' ? 'حارس وزارة' : 'حارس شركة'} — ${index+1}`;
+        item.appendChild(heading);
+        const missing = missingGuardFields(step);
+        const indicator = document.createElement('div');
+        indicator.className = 'completion ' + (missing.length ? 'incomplete' : 'complete');
+        indicator.textContent = missing.length ? 'يحتاج إلى استكمال' : 'البيانات مكتملة';
+        item.appendChild(indicator);
+        if (missing.length) appendReviewText(item, 'الحقول المطلوب استكمالها', missing.join('، '));
+        appendReviewText(item,'الاسم',step.data.guardName);
+        appendReviewText(item,'الهوية',step.data.nationalId ? '******' + step.data.nationalId.slice(-4) : 'لم تُدخل');
+        appendReviewText(item,'الجوال',step.data.phone ? '******' + step.data.phone.slice(-4) : 'لم يُدخل');
+        appendReviewText(item,'الجنس',step.data.gender);
+        if (step.employer === 'ministry') { appendReviewText(item,'المسمى الوظيفي',step.data.jobTitle); appendReviewText(item,'المرتبة',step.data.rank); }
+        appendReviewText(item,'مباشر للعمل',step.data.active);
+        appendReviewText(item,'مصدر البيانات',step.reference ? 'سجل مرجعي' : 'إدخال يدوي');
+        const changes = compareChanges(step,step.data);
+        if (changes.length) appendReviewText(item,'ملاحظة','تم تعديل بيانات الحارس عن البيانات المرجعية: ' + changes.map(id => fieldLabels[id]).join('، '));
+        const edit = document.createElement('button'); edit.type = 'button'; edit.className = 'secondary'; edit.textContent = 'تعديل بيانات الحارس';
+        edit.addEventListener('click', () => { currentIndex = index; renderGuard(); });
+        item.appendChild(edit); list.appendChild(item);
+      });
+      showStep('reviewStep');
+    }
+    $('reviewBackBtn').addEventListener('click', () => { if (steps.length) { currentIndex = steps.length-1; renderGuard(); } else showStep('countStep'); });
+    $('resetBtn').addEventListener('click', () => { steps = []; currentIndex = 0; $('ministryCount').value = '0'; $('companyCount').value = '0'; updateTotal(); showStep('countStep'); });
     async function loadSchool() {
       const params = new URLSearchParams(window.location.search);
       const schoolNumber = (params.get('schoolNumber') || '').trim();
-
-      if (!/^[0-9]+$/.test(schoolNumber)) {
-        showMessage(
-          'يرجى العودة إلى بوابة المدارس وإدخال رقم وزاري صحيح.',
-          true
-        );
-        return;
-      }
-
+      if (!/^[0-9]+$/.test(schoolNumber)) { showMessage('يرجى العودة إلى بوابة المدارس وإدخال رقم وزاري صحيح.', true); return; }
       showMessage('جارٍ البحث عن بيانات المدرسة...');
-
       try {
         const url = new URL(API_URL);
-
-        url.searchParams.set('action', 'schoolLookup');
-        url.searchParams.set('schoolNumber', schoolNumber);
-
+        url.searchParams.set('action','schoolLookup'); url.searchParams.set('schoolNumber',schoolNumber);
         const response = await fetch(url.toString());
-
-        if (!response.ok) {
-          throw new Error('تعذر الاتصال بالخدمة.');
-        }
-
+        if (!response.ok) throw new Error('تعذر الاتصال بالخدمة.');
         const data = await response.json();
-
-        if (!data.success || !data.school) {
-          showMessage(
-            data.message || 'لم يتم العثور على مدرسة بهذا الرقم الوزاري.',
-            true
-          );
-          return;
-        }
-
-        const school = data.school;
-
-        setField('schoolName', school.schoolName);
-        setField('schoolNumbers', school.schoolNumbers);
-        setField('governorate', school.governorate);
-        setField('city', school.city);
-        setField('schoolGender', school.schoolGender);
-
-        showMessage('تم العثور على المدرسة واسترجاع بياناتها بنجاح.');
-
+        if (!data.success || !data.school) { showMessage(data.message || 'لم يتم العثور على مدرسة بهذا الرقم الوزاري.', true); return; }
+        const school = data.school; publicSchool = school;
+        setField('schoolName',school.schoolName); setField('schoolNumbers',school.schoolNumbers);
+        setField('educationRegion','عسير'); setField('governorate',school.governorate); setField('city',school.governorate); setField('schoolGender',school.schoolGender);
+        $('guardsSection').hidden = false;
+        showMessage('تم العثور على المدرسة واسترجاع بياناتها بنجاح. يمكنك تجربة إعداد بيانات الحراس دون حفظها.');
       } catch (error) {
-        console.error('School lookup error:', error);
-
-        showMessage(
-          'تعذر استرجاع بيانات المدرسة حاليًا. يرجى المحاولة لاحقًا.',
-          true
-        );
+        console.error('School lookup error:',error);
+        showMessage('تعذر استرجاع بيانات المدرسة حاليًا. يرجى المحاولة لاحقًا.', true);
       }
     }
-
     loadSchool();
   </script>
+  <script src="workflow-ui.js"></script>
 </body>
 </html>

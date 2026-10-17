@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اختبار اتصال المدارس</title>
+</head>
+<body>
+  <h3>اختبار الاتصال بقاعدة بيانات المدارس</h3>
+  <pre id="result">جارٍ اختبار الاتصال...</pre>
+
+  <script>
+    const url = 'https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec?action=schoolLookup&schoolNumber=63463';
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('result').textContent =
+          JSON.stringify(data, null, 2);
+      })
+      .catch(error => {
+        document.getElementById('result').textContent =
+          'فشل الاتصال: ' + error.message;
+      });
+  </script>
+</body>
+</html>

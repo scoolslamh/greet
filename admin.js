@@ -1,0 +1,35 @@
+﻿const API_URL='https://script.google.com/macros/s/AKfycbzL7ecfewM8Lqr1rSMabU3zS5KFXSXqFgH5WSXMWKvHdxJ4TmsavyvvSaJONV8RXBm0/exec';
+const $=id=>document.getElementById(id);
+let token='',schools=[],visible=[],busy=false;
+function message(text,error=false){$('message').textContent=text;$('message').classList.toggle('error',error);}
+async function api(action,extra={}){
+ const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,token,...extra}),redirect:'follow'});
+ if(!response.ok)throw new Error('تعذر الاتصال.');const data=await response.json();if(!data.success)throw new Error(data.message||'تعذر تنفيذ الطلب.');return data;
+}
+function options(id,values){const select=$(id),previous=select.value;select.replaceChildren();const all=document.createElement('option');all.value='';all.textContent='الكل';select.appendChild(all);[...new Set(values)].filter(Boolean).sort((a,b)=>a.localeCompare(b,'ar')).forEach(value=>{const option=document.createElement('option');option.value=value;option.textContent=value;select.appendChild(option);});select.value=values.includes(previous)?previous:'';}
+async function refresh(){if(busy)return;busy=true;try{const data=await api('dashboard');schools=data.schools;options('governorate',schools.map(s=>s.governorate));options('city',schools.map(s=>s.city));options('supervisor',schools.map(s=>s.supervisor));render();$('dashboard').hidden=false;$('censusReportCard').hidden=false;$('adminLogin').hidden=true;message('تم تحديث التقرير. تظهر نتائج الفائض والعجز للمدارس التي أدخلت عدد الأفراد الحالي والعدد اللازم.');}catch(error){message(error.message,true);}finally{busy=false;}}
+$('login').addEventListener('submit',event=>{event.preventDefault();token=$('token').value.trim();$('token').value='';refresh();});
+function display(value){return SchoolCensus.blank(value)?'—':String(value);}
+function row(parent,values){const tr=document.createElement('tr');values.forEach(v=>{const td=document.createElement('td');td.textContent=display(v);tr.appendChild(td)});parent.appendChild(tr);return tr;}
+function censusOf(school){return SchoolCensus.normalize(school.census,{school,counts:{ministry:school.ministry,company:school.company}}).census;}
+function sumField(censuses,key){const values=censuses.map(c=>c[key]).filter(v=>typeof v==='number');return values.length?values.reduce((a,b)=>a+b,0):null;}
+function render(){
+ visible=schools.filter(s=>(!$('governorate').value||s.governorate===$('governorate').value)&&(!$('city').value||s.city===$('city').value)&&(!$('supervisor').value||s.supervisor===$('supervisor').value)&&(!$('school').value.trim() || (s.schoolName+' '+s.schoolNumbers).includes($('school').value.trim())));
+ const n=visible.length,done=visible.filter(s=>s.status==='مكتملة').length,censuses=visible.map(censusOf);
+ const calculated=censuses.map(c=>SchoolCensus.calculate(c));
+ const metrics=[['المدارس',n],['نسبة الإنجاز',n?(100*done/n).toFixed(1)+'%':'0%'],...['لم تبدأ','غير مكتملة','مكتملة','أعيد فتحها'].map(status=>[status,visible.filter(s=>s.status===status).length]),['حراس الوزارة المسجلون',visible.reduce((a,s)=>a+s.ministry,0)],['حراس الشركة المسجلون',visible.reduce((a,s)=>a+s.company,0)],['عدد البوابات الإجمالي',sumField(censuses,'totalGates')],['البوابات المستخدمة للدخول والخروج',sumField(censuses,'usedGates')],['أفراد التغطية الحاليون',sumField(censuses,'currentPersonnel')],['أفراد التغطية اللازمون',sumField(censuses,'requiredPersonnel')],['مدارس يوجد بها فائض',calculated.filter(c=>c.hasSurplus==='نعم').length],['إجمالي أفراد الفائض',sumField(calculated,'surplusCount')],['مدارس يوجد بها عجز',calculated.filter(c=>c.deficit>0).length],['إجمالي العجز',sumField(calculated,'deficit')],['مدارس لم تستكمل أعداد التغطية',calculated.filter(c=>c.hasSurplus==='').length],...SchoolCensus.fields.find(f=>f.key==='coverageExtent').options.map(value=>['مدى التغطية: '+value,censuses.filter(c=>c.coverageExtent===value).length]),...SchoolCensus.fields.find(f=>f.key==='coverageType').options.map(value=>['نوع التغطية: '+value,censuses.filter(c=>c.coverageType===value).length])];
+ $('stats').replaceChildren();metrics.forEach(([label,value])=>{const div=document.createElement('div');div.className='field';const strong=document.createElement('strong');strong.textContent=label;const span=document.createElement('span');span.textContent=display(value);div.append(strong,span);$('stats').appendChild(div)});
+ $('schools').replaceChildren();visible.forEach((s,index)=>{
+  const c=censuses[index],tr=row($('schools'),[s.schoolName,s.governorate,s.city,s.status,s.ministry,s.company,c.totalGates,c.usedGates,c.coverageType,c.coverageExtent,c.currentPersonnel,c.requiredPersonnel,c.hasSurplus,c.deficit,'']);
+  if(s.status==='مكتملة'){const button=document.createElement('button');button.textContent='إعادة الفتح';button.addEventListener('click',async()=>{if(busy)return;const reason=window.prompt('سبب إعادة فتح المدرسة (يسجل مع التاريخ وهوية المسؤول):');if(!reason)return;busy=true;try{await api('reopen',{schoolId:s.schoolId,revision:s.revision,reason});busy=false;await refresh();}catch(error){message(error.message,true);}finally{busy=false;}});tr.lastChild.appendChild(button);}
+ });
+ $('censusReportHeaders').replaceChildren();SchoolCensus.fields.forEach(field=>{const th=document.createElement('th');th.textContent=field.label;$('censusReportHeaders').appendChild(th);});
+ $('censusResults').replaceChildren();censuses.forEach(c=>row($('censusResults'),SchoolCensus.fields.map(f=>c[f.key])));
+ const supervisors=new Map();visible.forEach(s=>{const name=s.supervisor||'غير معين';const group=supervisors.get(name)||{total:0,done:0};group.total++;if(s.status==='مكتملة')group.done++;supervisors.set(name,group)});
+ $('supervisors').replaceChildren();supervisors.forEach((s,name)=>row($('supervisors'),[name,s.total,s.done,(100*s.done/s.total).toFixed(1)+'%']));
+}
+['governorate','city','supervisor'].forEach(id=>$(id).addEventListener('change',()=>{if(id==='governorate')options('city',schools.filter(s=>!$('governorate').value||s.governorate===$('governorate').value).map(s=>s.city));render();}));$('school').addEventListener('input',render);
+$('refresh').addEventListener('click',refresh);$('print').addEventListener('click',()=>window.print());$('logout').addEventListener('click',()=>{token='';window.location.reload()});
+function csvCell(value){let text=String(value??'');if(/^[=+@\-\t\r\n]/.test(text))text="'"+text;return '"'+text.replace(/"/g,'""')+'"';}
+$('csv').addEventListener('click',()=>{const rows=[['الرقم الوزاري','حالة المدرسة',...SchoolCensus.fields.map(f=>f.label)],...visible.map(s=>{const c=censusOf(s);return [s.schoolNumbers,s.status,...SchoolCensus.fields.map(f=>c[f.key])];})];const blob=new Blob(['\ufeff'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='school-security-report.csv';link.click();URL.revokeObjectURL(url);});
+window.addEventListener('beforeunload',()=>{token=''});

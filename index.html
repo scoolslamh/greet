@@ -6,151 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نظام الأمن والحراسة المدرسية</title>
 
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
-      background: #f3f6fa;
-      color: #17324d;
-    }
-
-    .header {
-      background: #123b5d;
-      color: white;
-      padding: 28px 20px;
-      text-align: center;
-    }
-
-    .header h1 {
-      margin: 0 0 10px;
-      font-size: 26px;
-    }
-
-    .header p {
-      margin: 0;
-      color: #d9e6f1;
-      font-size: 14px;
-    }
-
-    .container {
-      max-width: 460px;
-      margin: 70px auto;
-      padding: 0 18px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 8px 30px rgba(0,0,0,.07);
-    }
-
-    .card h2 {
-      margin: 0 0 12px;
-      text-align: center;
-    }
-
-    .description {
-      color: #657587;
-      text-align: center;
-      line-height: 1.8;
-      margin-bottom: 28px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
-      font-size: 17px;
-      outline: none;
-      direction: ltr;
-      text-align: center;
-    }
-
-    input:focus {
-      border-color: #1677b8;
-      box-shadow: 0 0 0 3px rgba(22,119,184,.12);
-    }
-
-    button {
-      width: 100%;
-      margin-top: 20px;
-      padding: 15px;
-      background: #1479b8;
-      color: white;
-      border: 0;
-      border-radius: 9px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover:not(:disabled) {
-      background: #0d6094;
-    }
-
-    button:disabled {
-      opacity: .65;
-      cursor: wait;
-    }
-
-    .message {
-      margin-top: 16px;
-      padding: 12px;
-      border-radius: 9px;
-      text-align: center;
-      line-height: 1.8;
-      font-size: 14px;
-      background: #e8f2fc;
-      color: #145d90;
-    }
-
-    .message.error {
-      background: #fff0f0;
-      color: #a12626;
-    }
-
-    .message[hidden] {
-      display: none;
-    }
-
-    .note {
-      margin-top: 22px;
-      text-align: center;
-      color: #78889a;
-      font-size: 12px;
-      line-height: 1.8;
-    }
-
-    @media (max-width: 480px) {
-      .container { margin: 35px auto; }
-      .card { padding: 24px 20px; }
-      .header h1 { font-size: 21px; }
-    }
-  </style>
+  <link rel="stylesheet" href="ui.css">
+<script src="ui.js" defer></script>
 </head>
 
-<body>
-  <header class="header">
-    <h1>نظام الأمن والحراسة المدرسية</h1>
-    <p>إدارة بيانات الحراس ومتابعة التغطية الأمنية للمدارس</p>
-  </header>
+<body class="index-page">
+  <a class="skip-link" href="#mainContent">انتقل إلى المحتوى</a><header class="site-header"><div class="header-inner"><a class="brand" href="index.html"><span class="brand-mark"><img src="assets/moe-logo.png" alt="وزارة التعليم" width="250" height="250"></span><span class="brand-copy"><strong>نظام الأمن والحراسة المدرسية</strong><span>الإدارة العامة للتعليم بمنطقة عسير</span></span></a><nav class="header-tools" aria-label="التنقل الرئيسي"><span class="workspace-chip">بوابة المدارس</span><a class="nav-link" href="admin.html">لوحة الإدارة</a></nav></div></header>
 
-  <main class="container">
-    <section class="card">
-      <h2>بوابة المدارس</h2>
+  <main id="mainContent" class="login-layout">
+    <aside class="login-intro"><span class="eyebrow">الأمن والحراسة المدرسية</span><h1>إدارة بيانات الحراسة<br>والتغطية الأمنية للمدارس</h1><p>استكمل بيانات الحراس وحصر التغطية الأمنية، ثم راجعها واعتمدها في خطوات واضحة.</p><ol class="mini-flow"><li>بيانات المدرسة</li><li>الحراس والتغطية</li><li>المراجعة والاعتماد</li></ol></aside>
+    <section class="card login-card">
+      <span class="eyebrow">بوابة المدارس</span><h2>ابدأ برقم المدرسة</h2>
 
       <p class="description">
-        أدخل الرقم الوزاري للمدرسة للانتقال إلى بياناتها.
+        أدخل الرقم الوزاري لاسترجاع بيانات مدرستك وبدء استكمال الحصر.
       </p>
 
       <form id="schoolForm">
@@ -184,7 +53,7 @@
         خدمات إدارة الحراس تتطلب صلاحية دخول معتمدة.
       </p>
     </section>
-  </main>
+  </main><footer class="site-footer"><span>نظام الأمن والحراسة المدرسية</span><span>الإدارة العامة للتعليم بمنطقة عسير</span></footer>
 
   <script>
     const API_URL =
